@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
-
 import '../models/profile_data.dart';
-
+import '../data/dummy_data.dart';
+import '../models/models.dart';
 import 'edit_profile_page.dart';
+import 'project_detail_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -13,14 +14,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  ProfileData _profile = const ProfileData(
-    name: 'iyya_starlvy',
-    email: 'iyya@example.com',
-    phone: '081234567890',
-    bio: 'Mahasiswa Teknik Informatika yang sedang belajar Flutter. '
-        'Suka membangun aplikasi mobile yang sederhana, rapi, dan berguna. '
-        'Sedang mengerjakan proyek akhir semester bertema kartu profil digital.',
-  );
+  Profile _profile = defaultProfile;
 
   bool _isFollowing = false;
   int _followers = 1200;
@@ -63,6 +57,30 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  void _openProjectDetail(Project project) {
+    
+  Future<void> _openEditProfile() async {
+    final result = await Navigator.push<Profile>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditProfilePage(profile: _profile),
+      ),
+    );
+
+    if (!mounted || result == null) return;
+
+    setState(() {
+      _profile = result;
+    });
+  }
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ProjectDetailPage(project: project),
+      ),
+    );
+  }
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
@@ -193,6 +211,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
+
           ],
         ),
       ),

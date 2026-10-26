@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 
+import '../models/models.dart';
+
 class EditProfilePage extends StatefulWidget {
-  const EditProfilePage({super.key});
+  final Profile profile;
+
+  const EditProfilePage({super.key, required this.profile});
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
 class _EditProfilePageState extends State<EditProfilePage> {
-  final _nameController = TextEditingController();
-  final _bioController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  late final TextEditingController _nameController;
+  late final TextEditingController _bioController;
 
-  String _preview = '';
-
-  void _showPreview() {
-    setState(() {
-      _preview = 'Halo, ${_nameController.text.trim()}! 👋';
-    });
+  @override
+  void initState() {
+    super.initState();
+    // Isi awal form diambil dari data yang dikirim lewat constructor
+    _nameController = TextEditingController(text: widget.profile.name);
+    _bioController = TextEditingController(text: widget.profile.bio);
   }
 
   @override
@@ -26,54 +31,67 @@ class _EditProfilePageState extends State<EditProfilePage> {
     super.dispose();
   }
 
+  void _save() {
+    if (!_formKey.currentState!.validate()) return;
+
+    final updated = widget.profile.copyWith(
+      name: _nameController.text.trim(),
+      bio: _bioController.text.trim(),
+    );
+
+    // Tutup halaman SEKALIGUS kirim hasil ke halaman sebelumnya
+    Navigator.pop(context, updated);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Edit Profil')),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nama Lengkap',
-                hintText: 'Contoh: Fakhry Firdaus',
-                prefixIcon: Icon(Icons.person_outline),
-                border: OutlineInputBorder(),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Nama',
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) => (value == null || value.trim().isEmpty)
+                    ? 'Nama tidak boleh kosong'
+                    : null,
               ),
-              onChanged: (_) => setState(() {}),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _bioController,
-              maxLines: 3,
-              decoration: const InputDecoration(
-                labelText: 'Bio',
-                prefixIcon: Icon(Icons.notes_outlined),
-                border: OutlineInputBorder(),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _bioController,
+                maxLines: 3,
+                decoration: const InputDecoration(
+                  labelText: 'Bio',
+                  border: OutlineInputBorder(),
+                ),
               ),
-              onChanged: (_) => setState(() {}),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Text('${_bioController.text.length}/100 karakter'),
-            ),
-            const SizedBox(height: 16),
-            FilledButton.icon(
-              onPressed: _nameController.text.trim().isEmpty ? null : _showPreview,
-              icon: const Icon(Icons.visibility_outlined),
-              label: const Text('Tampilkan Preview'),
-            ),
-            const SizedBox(height: 16),
-            if (_preview.isNotEmpty)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Text(_preview),
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => Navigator.pop(context), // hasil = null
+                      child: const Text('Batal'),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: FilledButton(
+                      onPressed: _save,
+                      child: const Text('Simpan'),
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
