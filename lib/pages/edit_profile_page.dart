@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 import '../models/models.dart';
 
 class EditProfilePage extends StatefulWidget {
@@ -19,7 +19,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     super.initState();
-    // Isi awal form diambil dari data yang dikirim lewat constructor
     _nameController = TextEditingController(text: widget.profile.name);
     _bioController = TextEditingController(text: widget.profile.bio);
   }
@@ -39,8 +38,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
       bio: _bioController.text.trim(),
     );
 
-    // Tutup halaman SEKALIGUS kirim hasil ke halaman sebelumnya
-    Navigator.pop(context, updated);
+    // Tutup halaman SEKALI GUS kirim hasil menggunakan go_router
+    context.pop(updated);
   }
 
   @override
@@ -77,14 +76,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 children: [
                   Expanded(
                     child: OutlinedButton(
-                      onPressed: () => Navigator.pop(context), // hasil = null
+                      onPressed: () => context.pop(), // Batal, hasil = null
                       child: const Text('Batal'),
                     ),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: FilledButton(
-                      onPressed: _save,
+                      onPressed: _save, // Diperbaiki: memanggil fungsi _save
                       child: const Text('Simpan'),
                     ),
                   ),

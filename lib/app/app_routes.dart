@@ -1,8 +1,10 @@
 class AppRoutes {
-  AppRoutes._(); // mencegah class ini dibuat objeknya
+  AppRoutes._();
 
   static const splash = '/';
   static const profile = '/profile';
-  static const projectDetail = '/project-detail';
-  static const editProfile = '/edit-profile';
-}
+  static const editProfile = '/profile/edit';
+
+  /// Path berparameter untuk Detail Proyek (anak dari Profil)
+  static String projectDetail(String id) => '/profile/projects/$id';
+}   
