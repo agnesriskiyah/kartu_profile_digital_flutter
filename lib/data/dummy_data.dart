@@ -5,7 +5,12 @@ const defaultProfile = Profile(
   bio: 'Mahasiswa Teknik Informatika yang sedang belajar Flutter. '
       'Suka membangun aplikasi mobile yang sederhana, rapi, dan berguna. '
       'Sedang mengerjakan proyek akhir semester bertema kartu profil digital.',
+  status: ProfileStatus.student,
+  openToWork: false,
+  skills: {'Flutter'},
 );
+
+const allSkillsList = ['Flutter', 'Dart', 'UI/UX', 'Firebase', 'Git'];
 
 const dummyProjects = <Project>[
   Project(
