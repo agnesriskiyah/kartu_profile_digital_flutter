@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import 'app/app_router.dart';
+import 'app_shell.dart';
 
-void main() => runApp(const MyApp());
+void main() => runApp(const KartuProfilApp());
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class KartuProfilApp extends StatelessWidget {
+  const KartuProfilApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
+    return MaterialApp(
       title: 'Kartu Profil Digital',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.indigo,
-        useMaterial3: true,
-      ),
-      routerConfig: appRouter,
+      theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
+      home: const AppShell(),
     );
   }
 }
