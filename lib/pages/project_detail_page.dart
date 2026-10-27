@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:go_router/go_router.dart';
 import '../models/models.dart';
 
 class ProjectDetailPage extends StatelessWidget {
@@ -33,7 +33,7 @@ class ProjectDetailPage extends StatelessWidget {
             SizedBox(
               width: double.infinity,
               child: FilledButton(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 child: const Text('Kembali'),
               ),
             ),
